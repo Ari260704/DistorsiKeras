@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Pendaftaran</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f9f9f9;
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        .form-container {
+            width: 350px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .options {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .options input[type="radio"] {
+            margin-right: 5px;
+        }
+
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            margin-right: 10px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .submit-btn {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .reset-btn {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .output {
+            margin-top: 20px;
+            background-color: #e8f5e9;
+            padding: 15px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .output p {
+            margin: 5px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Form Pendaftaran</h1>
+    <div class="form-container">
+        <form id="registration-form">
+            <label for="no-registrasi">Pilih No Registrasi</label>
+            <select id="no-registrasi" name="no-registrasi" required>
+                <option value="">Pilih No Registrasi</option>
+                <option value="2024HK125">2024HK125</option>
+                <option value="2023TI004">2023TI004</option>
+                <option value="2021MI132">2021MI132</option>
+                <option value="2020TI110">2020TI110</option>
+            </select>
+
+            <label for="nama">Nama</label>
+            <input type="text" id="nama" name="nama" placeholder="Masukkan Nama" required>
+
+            <label>Kode Mata Kuliah</label>
+            <div class="options">
+                <input type="radio" id="mkdu" name="kode" value="MKDU5" required>
+                <label for="mkdu">MKDU</label>
+                <input type="radio" id="mkpi" name="kode" value="MKPI3">
+                <label for="mkpi">MKPI</label>
+                <input type="radio" id="mkin" name="kode" value="MKIN4">
+                <label for="mkin">MKIN</label>
+            </div>
+
+            <button type="button" class="submit-btn" onclick="submitForm()">Submit</button>
+            <button type="reset" class="reset-btn" onclick="resetOutput()">Reset</button>
+        </form>
+    </div>
+
+    <div class="output" id="output">
+        <h2>Hasil Pendaftaran</h2>
+        <p id="output-nama"></p>
+        <p id="output-jurusan"></p>
+        <p id="output-no-urut"></p>
+        <p id="output-sks"></p>
+        <p id="output-no-registrasi"></p>
+        <p id="output-angkatan"></p>
+        <p id="output-matkul"></p>
+    </div>
+
+    <script>
+        function submitForm() {
+            const nama = document.getElementById('nama').value.toUpperCase();
+            const noRegistrasi = document.getElementById('no-registrasi').value;
+            const matkulKode = document.querySelector('input[name="kode"]:checked').value;
+
+            // Ambil Jurusan dari kode registrasi
+            const kodeJurusan = noRegistrasi.slice(4, 6);
+            let jurusan;
+            if (kodeJurusan === 'HK') {
+                jurusan = 'Hukum';
+            } else if (kodeJurusan === 'TI') {
+                jurusan = 'Teknik Informatika';
+            } else if (kodeJurusan === 'MI') {
+                jurusan = 'Manajemen Informatika';
+            }
+
+            // Ambil angkatan dan no urut dari kode registrasi
+            const angkatan = noRegistrasi.slice(0, 4);
+            const noUrut = noRegistrasi.slice(6);
+
+            // Ambil mata kuliah dari kode matakuliah
+            let matkul;
+            if (matkulKode.startsWith('MKDU')) {
+                matkul = 'Dasar Umum';
+            } else if (matkulKode.startsWith('MKPI')) {
+                matkul = 'Pilihan';
+            } else if (matkulKode.startsWith('MKIN')) {
+                matkul = 'Inti';
+            }
+
+            // Ambil SKS dari kode matakuliah
+            const sks = matkulKode.slice(-1);
+
+            // Tampilkan hasil
+            document.getElementById('output-nama').innerText = `Nama: ${nama}`;
+            document.getElementById('output-jurusan').innerText = `Jurusan: ${jurusan}`;
+            document.getElementById('output-no-urut').innerText = `No Urut: ${noUrut}`;
+            document.getElementById('output-sks').innerText = `SKS: ${sks}`;
+            document.getElementById('output-no-registrasi').innerText = `Nomor Registrasi: ${noRegistrasi}`;
+            document.getElementById('output-angkatan').innerText = `Angkatan: ${angkatan}`;
+            document.getElementById('output-matkul').innerText = `Mata Kuliah: ${matkul}`;
+
+            document.getElementById('output').style.display = 'block';
+        }
+
+        function resetOutput() {
+            document.getElementById('output').style.display = 'none';
+        }
+    </script>
+</body>
+
+</html>
